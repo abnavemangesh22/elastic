@@ -1,0 +1,111 @@
+ Define and use a custom analyzer that satisfies a given set of requirements:
+ 
+ 
+ POST _analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>"
+}
+ 
+ 
+POST _analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>",
+  "analyzer": "whitespace"
+}
+ 
+ 
+POST _analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>",
+  "analyzer": "simple"
+}
+ 
+ 
+POST _analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>",
+  "analyzer": "stop"
+}
+COPY
+
+
+ 
+PUT analyzer-test
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my-custom-analyzer": {
+          "type": "custom",
+          "char_filter": [
+            "html_strip",
+            "emoji_to_word"
+          ],
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "trim"
+          ]
+        }
+      },
+      "char_filter": {
+          "emoji_to_word": {
+            "type": "mapping",
+            "mappings": [
+              "😀 => happy",
+              "🐕 => dog"
+            ]
+          }
+        }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "comment": {
+        "type": "text",
+        "analyzer": "my-custom-analyzer"
+      },
+      "username": {
+        "type": "keyword"
+      }
+    }
+  }
+}
+POST analyzer-test/_analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>",
+  "analyzer": "my-custom-analyzer"
+}
+ 
+POST analyzer-test/_analyze
+{
+  "text": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>",
+  "analyzer": "standard"
+}
+ 
+ 
+PUT analyzer-test/_doc/1
+{
+  "username": "johnsmith",
+  "comment": "<b>THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 🐕 !!! 😀</b>"
+}
+ 
+GET analyzer-test/_search
+{
+  "query": {
+    "match": {
+      "comment": "🐕"
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

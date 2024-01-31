@@ -1,0 +1,133 @@
+Data Processing
+
+ Define a mapping that satisfies a given set of requirements.
+
+POST products/_doc
+{
+  "name": "Coffee Maker"
+}
+
+get products
+get products/_mapping
+
+
+POST products/_doc
+{
+  "name": "Coffee Maker",
+  "description": "Great for everyday use"
+}
+
+
+get products/_search
+get products/_mapping
+
+
+put products/_mapping
+{
+  "properties":{
+    "id": {
+      "type": "keyword"
+    }
+  }
+}
+
+get products/_mapping
+
+
+POST products/_doc
+{
+  "name": "Coffee Maker",
+  "description": "Great for everyday use",
+  "id": "ID123"
+}
+
+get products/_search
+
+
+
+
+PUT products/_mapping
+{
+  "properties": {
+    "date": {
+      "type": "date"
+    },
+    "available": {
+      "type": "boolean"
+    },
+    "total_stock": {
+      "type": "double"
+    }
+  }
+}
+
+
+	
+POST products/_doc
+{
+  "name": "Coffee Maker",
+  "description": "Best in town",
+  "id": "ID 123",
+  "date": "2022-07-17",
+  "available": true,
+  "total_stock": 500
+}
+ 
+GET products/_search
+
+
+
+WE CANNOT UPDATE MAPPING OF AN EXISTING FIELD
+
+	
+PUT products/_mapping
+{
+  "properties": {
+    "name": {
+      "type": "keyword"
+    }
+  }
+}
+
+
+
+still if you want to change it
+
+
+
+	
+PUT products-v2
+{
+  "mappings": {
+   
+
+
+   
+    
+    
+    
+  }
+}
+
+
+	
+POST _reindex
+{
+  "source": {
+    "index": "products"
+  },
+  "dest": {
+    "index": "products-v2"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

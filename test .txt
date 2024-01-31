@@ -1,0 +1,50 @@
+Write and execute a query that searches across multiple clusters
+
+
+setup another server with below parameters: 
+
+cluster.name: my-application
+network.host: 0.0.0.0
+http.port: 9200
+transport.host: 0.0.0.0
+transport.port: 9600
+discovery.type: single-node
+xpack.security.enabled: false
+
+Check the firewall service should be turned off
+systemctl stop firewalld
+
+
+PUT _cluster/settings
+{
+  "persistent": {
+  "cluster":{
+    "remote": {
+      "secondary_cluster":{
+        "seeds": ["192.168.217.11:9600"]
+      }
+    }
+  }
+ }
+}
+
+
+
+GET shakespeare/_search
+{
+  "query": {
+    "match": {
+      "text_entry": "king"
+    }
+  }
+}
+
+GET shakespeare,secondary_cluster:shakespeare/_search
+{
+  "query": {
+    "match": {
+      "text_entry": "king"
+    }
+  }
+}
+

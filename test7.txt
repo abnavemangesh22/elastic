@@ -1,0 +1,197 @@
+# Highlighting features in search
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "fields": {
+      "products.product_name": {}
+    }
+  }
+}
+
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  }
+}
+
+
+# Sorting features
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "customer_first_name.keyword": {}
+    }
+    ]
+}
+
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "customer_first_name.keyword": {
+        "order": "desc"
+      }
+    }
+    ]
+}
+
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "customer_first_name.keyword": {}
+    },
+    {
+      "customer_last_name.keyword": {}
+    }
+    ]
+}
+
+
+# sorting by numeric ascending 
+
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "taxful_total_price": {}
+    }
+    ]
+}
+
+
+
+
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "taxful_total_price": {
+	  "order": "desc"
+	  }
+    }
+    ]
+}
+
+
+# Pagination in index
+
+# pagination
+
+get /kibana_sample_data_ecommerce/_search
+{
+  "from": 20,
+  "size": 10,
+  "query":{
+    "match": {
+      "products.product_name": "boot"
+    }
+  },
+  "highlight":{
+    "pre_tags": "<b><i>",
+    "post_tags": "<b></i>",
+    "fields": {
+      "products.product_name": {}
+    }
+  },
+  "sort":[
+    {
+      "taxful_total_price": {}
+    }
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+

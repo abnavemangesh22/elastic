@@ -1,0 +1,67 @@
+Use the Reindex API and Update By Query API to reindex and or update documents
+
+GET ecom2/_search?size=1&from=110
+
+POST ecom2/_update/pkOZVI0BvP5b8d3UufAf
+{
+  "doc":{
+    "currency": "USD"
+  }
+}
+
+get ecom2/_doc/pkOZVI0BvP5b8d3UufAf
+
+
+
+
+POST ecom2/_update/pkOZVI0BvP5b8d3UufAf
+{
+  "script": {
+    "source": """ctx._source.currency = "INR";
+    ctx._source.taxful_total_price = ctx._source.taxful_total_price * 1.1""",
+    "lang": "painless"
+  }
+}
+
+
+get ecom2/_doc/pkOZVI0BvP5b8d3UufAf
+
+
+
+
+
+
+
+
+# update by query
+
+post ecom2/_update_by_query?conflicts=proceed
+
+POST ecom2/_update_by_query
+{
+  "conflicts": "proceed",
+  "script": {
+    "source": """ctx._source.currency = "INR";
+    ctx._source.taxful_total_price = ctx._source.taxful_total_price * 1.1""",
+    "lang": "painless"
+  },
+  "query": {
+    "match": {
+      "customer_first_name": "jackson"
+    }
+  }
+}
+
+
+get ecom2/_search
+{
+  "query": {
+    "match": {
+      "customer_first_name": "jackson"
+    }
+  }
+}
+
+
+
+

@@ -1,0 +1,65 @@
+ Define runtime fields to retrieve custom values using Painless scripting
+ 
+ # scrit with runtime values
+
+put myindex-2
+{
+  "mappings":{
+    "properties": {
+      "@timestamp":{
+        "type": "date"
+      }
+    }
+  }
+}
+
+POST myindex-2/_doc
+{
+  "@timestamp": "2024-08-22"
+}
+
+POST myindex-2/_doc
+{
+  "@timestamp": "2024-08-23"
+}
+
+
+POST myindex-2/_doc
+{
+  "@timestamp": "2024-08-24"
+}
+
+
+POST myindex-2/_doc
+{
+  "@timestamp": "2024-08-25"
+}
+
+
+
+get myindex-2/_search
+
+get myindex-2/_search
+{
+  "runtime_mappings":{
+    "day_of_week_testing": {
+      "type": "keyword",
+      "script" : {
+        "source" : """emit(doc['@timestamp'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))"""
+      }
+    }
+  },
+  "size" : 0,
+  "aggs" : {
+    "aggregate_by_day_of_week": {
+      "terms": {
+        "field": "day_of_week_testing"
+      }
+    }
+  }
+}
+
+
+
+
+

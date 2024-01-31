@@ -1,0 +1,109 @@
+# Search Template for indexes:
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "from": 0,
+  "size": 20,
+  "query": {
+    "match": {
+      "customer_full_name": "jackson"
+    }
+  },
+  "highlight":{
+    "fields": {
+      "customer_full_name": {}
+    }
+  },
+  "sort": [
+    {
+      "taxful_total_price": {
+        "order" : "desc"
+      }
+    }
+  ]
+}
+
+
+
+
+PUT _scripts/my-search-template
+{
+  "script":{
+    "lang": "mustache",
+    "source": {
+      "from": "{{from}}",
+      "size": "{{size}}",
+      "query":{
+        "match": {
+          "customer_full_name": "{{customerFullName}}"
+        }
+      },
+      "highlight":{
+        "fields": {
+          "customer_full_name": {}
+        }
+      },
+      "sort":[
+        {
+          "taxful_total_price": {
+            "order": "desc"
+          }
+        }
+        ]
+    }
+  }
+}
+
+
+
+PUT _scripts/my-search-template
+{
+  "script":{
+    "lang": "mustache",
+    "source": {
+      "from": "{{from}}{{^from}}0{{/from}}",
+      "size": "{{size}}{{^size}}20{{/size}}",
+      "query":{
+        "match": {
+          "customer_full_name": "{{customerFullName}}"
+        }
+      },
+      "highlight":{
+        "fields": {
+          "customer_full_name": {}
+        }
+      },
+      "sort":[
+        {
+          "taxful_total_price": {
+            "order": "desc"
+          }
+        }
+        ]
+    }
+  }
+}
+
+
+
+# just for testing
+POST _render/template
+{
+  "id": "my-search-template",
+  "params": {
+    "from": "0",
+    "size": "20",
+    "customerFullName": "Jackson"
+  }
+}
+
+# now search for the index
+GET kibana_sample_data_ecommerce/_search/template
+{
+  "id": "my-search-template",
+  "params": {
+   "customerFullName": "Jackson"
+  }
+}
+

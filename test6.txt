@@ -1,0 +1,72 @@
+Index aliases
+
+# index aliases
+
+POST _aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "kibana_sample_data_ecommerce",
+        "alias": "supershop"
+      }
+    }
+  ]
+}
+
+
+get supershop/_search
+
+
+
+POST _aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index": "kibana_sample_data_ecommerce",
+        "alias": "supershop"
+      }
+    },
+    {
+      "add": {
+        "index": "kibana_sample_data_ecommerce",
+        "alias": "online"
+      }
+    }
+  ]
+}
+
+get online/_search
+
+# add aliases thru component template
+
+PUT _component_template/logs-component-template
+{
+  "template": {
+    "aliases": {
+      "logs": {}
+    }
+  }
+}
+
+
+PUT _index_template/logs_index_template
+{
+  "index_patterns": ["samples-*"],
+  "composed_of": ["logs-component-template"],
+  "template": {
+    "settings": {
+      "number_of_replicas": 1,
+      "number_of_shards": 1
+    }
+  }
+}
+
+
+put samples-123
+
+get samples-123
+
+
+

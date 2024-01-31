@@ -1,0 +1,13 @@
+Write an asynchronous search: 
+ 
+POST kibana_sample_data_ecommerce/_search
+POST kibana_sample_data_ecommerce/_async_search
+POST kibana_sample_data_ecommerce/_async_search?wait_for_completion_timeout=0 (you will get ID on this output)
+
+
+get _async_search/status/FjJSWm54bGpuUkhhZ0UxV1FPRm83NkEeWFEzTS1oZDlUWk9EM1p3aTQzV09EZzoxODg2NzMy
+
+GET _async_search/FjJSWm54bGpuUkhhZ0UxV1FPRm83NkEeWFEzTS1oZDlUWk9EM1p3aTQzV09EZzoxODg2NzMy
+
+DELETE _async_search/FjJSWm54bGpuUkhhZ0UxV1FPRm83NkEeWFEzTS1oZDlUWk9EM1p3aTQzV09EZzoxODg2NzMy
+

@@ -1,0 +1,114 @@
+ Define and use multi-fields with different data types and_or analyzers
+ 
+ # muti-field demo 
+
+PUT multi-field-demo
+{
+  "mappings": {
+    "properties": {
+      "city": {
+        "type" : "text",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+get multi-field-demo/_mapping
+
+PUT multi-field-demo/_doc/1
+{
+  "city": "New York"
+}
+
+PUT multi-field-demo/_doc/2
+{
+  "city": "York"
+}
+
+
+GET multi-field-demo/_search
+{
+  "query": {
+    "match": {
+      "city": "york"
+    }
+  },
+  "sort": 
+    {
+      "city.raw": {
+        "order": "asc"
+      }
+      },
+      "aggs": {
+        "Cities":{
+          "terms":{
+            "field": "city.raw"
+          }
+        }
+      }
+    }
+}
+
+
+
+
+
+
+PUT multi-field-demo-1
+{
+  "mappings": {
+    "properties": {
+      "text": {
+        "type": "text",
+        "fields": {
+          "english":{
+            "type": "text",
+            "analyzer": "english"
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT multi-field-demo-1/_doc/1
+{
+  "text" : "quick brown fox"
+}
+
+
+
+PUT multi-field-demo-1/_doc/2
+{
+  "text" : "quick brown foxes"
+}
+
+
+GET multi-field-demo-1/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "quick brown foxes",
+      "fields": [
+        "text", "text.english"
+        ],
+        "type": "most_fields"
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+

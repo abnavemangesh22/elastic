@@ -1,0 +1,235 @@
+Write and execute metric and bucket aggregations
+Write and execute aggregations that contain sub-aggregations
+
+
+#total of all sum of the sales:
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "total-of-taxful-price": {
+      "sum": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+#total of all avg of the sales:
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "avg-of-taxful-price": {
+      "avg": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "max-of-taxful-price": {
+      "max": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "max-of-taxful-price": {
+      "max": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "min-of-taxful-price": {
+      "min": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "count-of-taxful-price": {
+      "value_count": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "stats-of-taxful-price": {
+      "stats": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "stats-of-taxful-price": {
+      "extended_stats": {
+        "field": "taxful_total_price"
+      }
+    }
+  }
+}
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "cardinality-of-email": {
+      "cardinality": {
+        "field": "email"
+      }
+    }
+  }
+}
+
+# Bucket Aggregation functions:
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "transactions-per-day": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "day"
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "transactions-per-day": {
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "month"
+      }
+    }
+  }
+}
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "emails-unique": {
+      "terms": {
+        "field": "email",
+        "size": 10
+      }
+    }
+  }
+}
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size":0,
+  "aggs":{
+    "emails-unique": {
+      "terms": {
+        "field": "email",
+        "size": 100
+      }
+    }
+  }
+}
+
+
+# subaggregation
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size": 0,
+  "aggs": {
+    "total-sales-per-date":{
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "day"
+      },
+      "aggs": {
+        "total-sales": {
+          "sum": {
+            "field": "taxful_total_price"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+get kibana_sample_data_ecommerce/_search
+{
+  "size": 0,
+  "aggs": {
+    "total-sales-per-date":{
+      "date_histogram": {
+        "field": "order_date",
+        "calendar_interval": "day"
+      },
+      "aggs": {
+        "total-sales": {
+          "avg": {
+            "field": "taxful_total_price"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

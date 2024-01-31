@@ -1,0 +1,46 @@
+How to use the runtime field:
+
+get movies/_search
+
+GET movies/_search
+{
+  "runtime_mappings": {
+    "profit": {
+      "type": "long",
+      "script": {
+        "source": "emit(doc['revenue'].value - doc['budget'].value)"
+      }
+    }
+  },
+  "fields": [
+    "profit"
+  ]
+}
+
+
+This will add the runtime mapping into the index
+
+PUT movies/_mapping
+{
+  "runtime": {
+    "profit":{
+      "type": "long",
+      "script": {
+        "source": "emit(doc['revenue'].value - doc['budget'].value)"
+      }
+    }
+  }
+}
+
+
+get movies/_search
+{
+  "fields": [
+    "profit"],
+    "query": {
+      "match_all": {}
+    }
+}
+
+
+

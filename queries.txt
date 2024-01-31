@@ -1,0 +1,180 @@
+################################################
+
+Write and execute a search query for terms and or phrases in one or more fields
+
+
+# Match bool with must query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "email": {
+              "value": "jackson@cook-family.zzz"
+            }
+          }
+        },
+        {
+          "term": {
+            "order_date": {
+              "value": "2024-02-11"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+# Match bool should query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "email": {
+              "value": "jackson@cook-family.zzz"
+            }
+          }
+        },
+        {
+          "term": {
+            "order_date": {
+              "value": "2022-02-11"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+# must and must not query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "email": {
+              "value": "jackson@cook-family.zzz"
+            }
+          }
+        }
+         ],
+       "must_not": [
+        {
+          "term": {
+            "total_unique_products": {
+              "value": "5"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+# Match phrase prefix query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "match_phrase_prefix": {
+      "customer_full_name": "jackson c"
+    }
+  }
+}
+
+
+# Fuzzy Query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "fuzzy": {
+      "customer_first_name": {
+        "value": "jakcsan",
+        "fuzziness": "AUTO"
+      }
+    }
+  }
+}
+
+
+# Filter query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "customer_first_name": "jackson"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "order_date": {
+              "lte": "2024-02-21"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+# named query
+
+GET /kibana_sample_data_ecommerce/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "customer_first_name": {
+              "query": "jackson",
+              "_name": "name is jackson"
+            }
+          }
+        },
+        {
+          "match": {
+            "customer_first_name": {
+              "query": "mary",
+              "_name": "name is mary"
+            }
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "order_date": {
+              "lte": "2024-02-21",
+              "_name": "older data"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
